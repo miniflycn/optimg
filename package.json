@@ -1,0 +1,50 @@
+{
+  "name": "optimg",
+  "version": "0.2.0",
+  "description": "A tool for Optimizing Images",
+  "keywords": [
+    "png",
+    "jpg",
+    "compress",
+    "minify",
+    "optimize",
+    "img",
+    "image"
+  ],
+  "homepage": "https://github.com/miniflycn/optimg2",
+  "bugs": "https://github.com/miniflycn/optimg2/issues",
+  "author": {
+    "name": "Daniel",
+    "email": "miniflycn@justany.net"
+  },
+  "main": "lib/optimg",
+  "bin": {
+    "optimg": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/miniflycn/optimg2.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "dependencies": {
+    "optipng-bin": "0.3.8",
+    "jpegtran-bin": "0.2.6",
+    "chalk": "~0.2.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "files": [
+    "cli.js"
+  ]
+}
