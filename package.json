@@ -1,7 +1,7 @@
 {
   "name": "optimg",
-  "version": "0.2.0",
-  "description": "A tool for Optimizing Images",
+  "version": "0.3.0",
+  "description": "A CLI for Optimizing Images",
   "keywords": [
     "png",
     "jpg",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/miniflycn/optimg2.git"
+    "url": "git://github.com/miniflycn/optimg.git"
   },
   "scripts": {
     "test": "mocha"
@@ -37,9 +37,11 @@
     }
   ],
   "dependencies": {
-    "optipng-bin": "0.3.8",
-    "jpegtran-bin": "0.2.6",
-    "chalk": "~0.2.0"
+    "chalk": "~0.2.0",
+    "each-async": "^1.1.0",
+    "jpegtran-bin": "*",
+    "optipng-bin": "*",
+    "pngout-bin": "*"
   },
   "devDependencies": {
     "mocha": "*"

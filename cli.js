@@ -5,10 +5,12 @@
   var fs = require('fs')
     , optipng = require('optipng-bin').path
     , jpegtran = require('jpegtran-bin').path
+    , pngout = require('pngout-bin').path
     , spawn = require('child_process').spawn
     , chalk = require('chalk')
     , cwd = process.cwd()
-    , lists = getFiles(cwd);
+    , lists = getFiles(cwd)
+    , each = require('each-async');
 
   function getFiles(root) {
     var res = [];
@@ -43,27 +45,42 @@
     return res;
   }
 
-  function optiJpg(lists, i) {
-    i = i || 0;
-    var len = lists.length;
-    console.log(chalk.green('✓ ' + lists[i]));
-    spawn(jpegtran, ['-copy', 'none', '-optimize', '-outfile', lists[i], lists[i]], { stdio: 'inherit' })
-      .on('exit', function () {
-        if (++i >= len) return process.exit();
-        return optiJpg(lists, i);
-      });
-  }
-
-  var imgs = filterPng(lists);
-  function beginJpg() {
-    imgs = filterJpg(lists);
-    imgs.length ? 
-      optiJpg(imgs) :
+  function begin() {
+    each(['jpg', 'png'], function (item, i, done) {
+      exec[item](done);
+    }, function () {
       process.exit();
+    });
   }
 
-  imgs.length ?
-    spawn(optipng, process.argv.slice(2).concat(imgs), { stdio: 'inherit' })
-      .on('exit', beginJpg) :
-    beginJpg();
+  var exec = {
+    jpg: function (cb) {
+      each(filterJpg(lists), function (file, i, done) {
+        console.log(chalk.green('✓ ' + file));
+        spawn(jpegtran, ['-copy', 'none', '-optimize', '-outfile', file, file],  { stdio: 'inherit' })
+          .on('exit', function () {
+            done();
+          });
+      }, function () {
+        cb();
+      });
+    },
+    png: function (cb) {
+      var imgs = filterPng(lists);
+      if (!imgs.length) cb();
+      spawn(optipng, process.argv.slice(2).concat(imgs), { stdio: 'inherit' })
+        .on('exit', function () {
+          each(imgs, function (file, i, done) {
+            spawn(pngout, ['-y', file, file],  { stdio: 'inherit' })
+              .on('exit', function () {
+                done();
+              });
+          }, function () {
+            cb();
+          })
+        })
+    }
+  };
+
+  begin();
 }();
