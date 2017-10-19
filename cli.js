@@ -3,9 +3,9 @@
   'use strict';
 
   var fs = require('fs')
-    , optipng = require('optipng-bin').path
-    , jpegtran = require('jpegtran-bin').path
-    , pngout = require('pngout-bin').path
+    , optipng = require('optipng-bin')
+    , jpegtran = require('jpegtran-bin')
+    , pngout = require('pngout-bin')
     , spawn = require('child_process').spawn
     , chalk = require('chalk')
     , cwd = process.cwd()
@@ -57,7 +57,7 @@
     jpg: function (cb) {
       each(filterJpg(lists), function (file, i, done) {
         console.log(chalk.green('✓ ' + file));
-        spawn(jpegtran, ['-copy', 'none', '-optimize', '-outfile', file, file],  { stdio: 'inherit' })
+        spawn(jpegtran, ['-copy', 'none', '-optimize', '-outfile', file, file])
           .on('exit', function () {
             done();
           });
@@ -68,10 +68,10 @@
     png: function (cb) {
       var imgs = filterPng(lists);
       if (!imgs.length) cb();
-      spawn(optipng, process.argv.slice(2).concat(imgs), { stdio: 'inherit' })
+      spawn(optipng, process.argv.slice(2).concat(imgs))
         .on('exit', function () {
           each(imgs, function (file, i, done) {
-            spawn(pngout, ['-y', file, file],  { stdio: 'inherit' })
+            spawn(pngout, ['-y', file, file])
               .on('exit', function () {
                 done();
               });
